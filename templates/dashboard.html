@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/matches.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="{{ url_for('routes.leaderboard') }}">Leaderboard</a> | 
+        <a href="{{ url_for('routes.update_scores') }}">Update Scores</a> | 
+        <a href="{{ url_for('routes.sync_matches') }}">Sync Matches</a> |
+        <a href="{{ url_for('routes.reset_scores') }}">Reset Scores</a> |
+        <a href="{{ url_for('routes.logout') }}">Logout</a>
+    </nav>
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ current_user.username }}! Points: {{ current_user.points }}</p>
+    <h2>Upcoming Matches</h2>
+    {% for match in matches %}
+        <div class="match" id="match-{{ match.id }}">
+            <p>
+                <strong>Quals {{ match.match_number }}</strong>:
+                <span class="red-alliance">Red Alliance: {{ match.red_team1 }}, {{ match.red_team2 }}, {{ match.red_team3 }}</span>
+                vs
+                <span class="blue-alliance">Blue Alliance: {{ match.blue_team1 }}, {{ match.blue_team2 }}, {{ match.blue_team3 }}</span>
+                {% if match.scored %}
+                    {% if match.winner == "Tie" %}
+                        (Completed - Tie) <span class="status-tie"></span>
+                    {% else %}
+                        (Completed - Winner: {{ match.winner }})
+                    {% endif %}
+                {% else %}
+                    (Scheduled: {{ match.scheduled_time | datetimeformat }})
+                {% endif %}
+            </p>
+            {% set prediction = predictions | selectattr('match_id', 'equalto', match.id) | first %}
+            <form method="POST" action="{{ url_for('routes.predict') }}" {% if prediction %}class="has-prediction{% if match.scored %} disabled-form{% endif %}"{% endif %}>
+                <input type="hidden" name="match_id" value="{{ match.id }}">
+                <select name="predicted_winner" {% if match.scored %}disabled{% endif %}>
+                    <option value="Red" {% if prediction and prediction.predicted_winner == "Red" %}selected{% endif %}>Red Alliance</option>
+                    <option value="Blue" {% if prediction and prediction.predicted_winner == "Blue" %}selected{% endif %}>Blue Alliance</option>
+                </select>
+                {% if not match.scored %}
+                    <button type="submit" class="{{ 'update' if prediction else '' }}">{{ 'Update Prediction' if prediction else 'Predict' }}</button>
+                {% endif %}
+            </form>
+            {% if prediction %}
+                <p class="prediction-text {% if match.scored %}{% if match.winner == 'Tie' %}tie{% elif prediction.predicted_winner == match.winner %}correct{% else %}incorrect{% endif %}{% endif %}">
+                    Current prediction: {{ prediction.predicted_winner }} Alliance
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

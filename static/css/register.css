@@ -1,0 +1,66 @@
+/* Register Page Styling */
+.register-form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.register-form:hover {
+    transform: translateY(-3px); /* Slight lift on hover, matching login */
+}
+
+.register-input {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.register-input:focus {
+    border-color: #007bff; /* FRC blue on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle glow */
+}
+
+.register-button {
+    background-color: #28a745; /* Green to differentiate from login’s blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+.register-button:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: scale(1.05); /* Slight grow */
+}
+
+.register-button:active {
+    transform: scale(0.98); /* Slight shrink on click */
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .register-form {
+        padding: 15px;
+    }
+    .register-input, .register-button {
+        max-width: 100%;
+    }
+}
