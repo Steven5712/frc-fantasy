@@ -1,0 +1,14 @@
+{
+    "containers": {
+      "frc-fantasy": {
+        "image": ":frc-fantasy-service.frc-fantasy.2",
+        "ports": {
+          "5000": "HTTP"
+        }
+      }
+    },
+    "publicEndpoint": {
+      "containerName": "frc-fantasy",
+      "containerPort": 5000
+    }
+  }
