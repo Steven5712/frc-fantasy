@@ -57,7 +57,12 @@ def predict():
     return redirect(url_for('routes.dashboard', _anchor=f'match-{match_id}'))
 
 @routes_bp.route('/update_scores')
+@login_required
 def update_scores():
+    if not current_user.is_admin:
+        flash("Admin privileges required to update scores.")
+        return redirect(url_for('routes.dashboard'))
+
     unscored = Match.query.filter_by(scored=False).all()
     updated = False
     for match in unscored:
@@ -83,7 +88,12 @@ def update_scores():
     return redirect(url_for('routes.dashboard'))
 
 @routes_bp.route('/sync_matches')
+@login_required
 def sync_matches():
+    if not current_user.is_admin:
+        flash("Admin privileges required to sync matches.")
+        return redirect(url_for('routes.dashboard'))
+
     url = f'https://www.thebluealliance.com/api/v3/event/{CURRENT_EVENT}/matches/simple'
     resp = requests.get(url, headers=TBA_HEADERS)
     if resp.status_code != 200:
@@ -111,6 +121,10 @@ def sync_matches():
 @routes_bp.route('/reset_scores')
 @login_required
 def reset_scores():
+    if not current_user.is_admin:
+        flash("Admin privileges required to reset scores.")
+        return redirect(url_for('routes.dashboard'))
+
     for match in Match.query.all(): match.scored = False
     for user in User.query.all(): user.points = 0
     db.session.commit()

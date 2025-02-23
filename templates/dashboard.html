@@ -12,9 +12,11 @@
 <body>
     <nav class="top-nav">
         <a href="{{ url_for('routes.leaderboard') }}">Leaderboard</a> | 
-        <a href="{{ url_for('routes.update_scores') }}">Update Scores</a> | 
-        <a href="{{ url_for('routes.sync_matches') }}">Sync Matches</a> |
-        <a href="{{ url_for('routes.reset_scores') }}">Reset Scores</a> |
+        {% if current_user.is_admin %}
+            <a href="{{ url_for('routes.update_scores') }}">Update Scores</a> | 
+            <a href="{{ url_for('routes.sync_matches') }}">Sync Matches</a> |
+            <a href="{{ url_for('routes.reset_scores') }}">Reset Scores</a> |
+        {% endif %}
         <a href="{{ url_for('routes.logout') }}">Logout</a>
     </nav>
     <h1>Dashboard</h1>
