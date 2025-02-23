@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fantasy FIRST Robotics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/matches.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <div class="top-nav">
+        <a href="{{ url_for('routes.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('routes.leaderboard') }}">Leaderboard</a>
+        <a href="{{ url_for('routes.login') }}">Login</a>
+        <a href="{{ url_for('routes.register') }}">Register</a>
+    </div>
+    <div class="content">
+        <h1 class="home-title">Welcome to Fantasy FIRST Robotics</h1>
+        <div class="home-links">
+            <a href="{{ url_for('routes.login') }}" class="home-button login-link">Login</a>

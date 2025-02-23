@@ -1,0 +1,7 @@
+{
+    "containerName": "app",
+    "containerPort": 5000,
+    "healthCheck": {
+      "path": "/"
+    }
+  }

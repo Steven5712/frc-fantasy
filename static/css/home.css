@@ -1,0 +1,60 @@
+/* Home Page Styling */
+.home-title {
+    font-size: 2.8em;
+    color: #007bff; /* FRC blue */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-bottom: 30px;
+    transition: color 0.2s;
+}
+
+.home-title:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+.home-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.home-button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: transform 0.2s, background-color 0.2s;
+    margin: 0 10px;
+}
+
+.login-link {
+    background-color: #007bff; /* FRC blue */
+    color: white;
+}
+
+.login-link:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.register-link {
+    background-color: #28a745; /* Green for register */
+    color: white;
+}
+
+.register-link:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .home-title {
+        font-size: 2em;
+    }
+    .home-button {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+    }
+}
