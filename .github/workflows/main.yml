@@ -34,10 +34,17 @@ jobs:
 
       # Build and push Docker image to Lightsail
       - name: Build and Push to Lightsail
+        id: push_image
         run: |
           docker build -t frc-fantasy:latest .
-          aws lightsail push-container-image --service-name frc-fantasy-service --label frc-fantasy --image frc-fantasy:latest
-          IMAGE_REF=$(aws lightsail get-container-images --service-name frc-fantasy-service --query "containerImages[?label=='frc-fantasy'].image" --output text | head -n 1)
+          PUSH_OUTPUT=$(aws lightsail push-container-image --service-name frc-fantasy-service --label frc-fantasy --image frc-fantasy:latest)
+          echo "$PUSH_OUTPUT"
+          IMAGE_REF=$(echo "$PUSH_OUTPUT" | grep -o ":frc-fantasy-service.frc-fantasy.[0-9]*" | head -n 1)
+          if [ -z "$IMAGE_REF" ]; then
+            echo "Error: Could not extract IMAGE_REF from push output"
+            exit 1
+          fi
+          echo "image_ref=$IMAGE_REF" >> $GITHUB_OUTPUT
 
       # Deploy the new image
       - name: Deploy to Lightsail
@@ -46,7 +53,7 @@ jobs:
           {
             "containers": {
               "frc-fantasy": {
-                "image": "$IMAGE_REF",
+                "image": "${{ steps.push_image.outputs.image_ref }}",
                 "ports": {
                   "5000": "HTTP"
                 }
