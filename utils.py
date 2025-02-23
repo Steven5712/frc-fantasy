@@ -5,7 +5,7 @@ import requests
 
 TBA_API_KEY = 'KbhtQ7hLnAVrhwv4aAuXmZoREyhy0Dutxx5Xob4gHnlbmEUhO087gT253BBjk52n'  # Replace with your TBA API key
 TBA_HEADERS = {'X-TBA-Auth-Key': TBA_API_KEY}
-CURRENT_EVENT = '2024mndu2'
+CURRENT_EVENT = '2025isde1'
 
 def datetimeformat(value, format='%B %d, %Y'):
     if not value:
