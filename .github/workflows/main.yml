@@ -1,0 +1,61 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out your code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up AWS CLI and Lightsailctl
+      - name: Install AWS CLI and Lightsailctl
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+          sudo curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl" -o "/usr/local/bin/lightsailctl"
+          sudo chmod +x /usr/local/bin/lightsailctl
+          aws --version
+          lightsailctl --version
+
+      # Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: <your-region>  # e.g., us-east-2
+
+      # Build and push Docker image to Lightsail
+      - name: Build and Push to Lightsail
+        run: |
+          docker build -t frc-fantasy:latest .
+          aws lightsail push-container-image --service-name frc-fantasy-service --label frc-fantasy --image frc-fantasy:latest
+          IMAGE_REF=$(aws lightsail get-container-images --service-name frc-fantasy-service --query "containerImages[?label=='frc-fantasy'].image" --output text | head -n 1)
+
+      # Deploy the new image
+      - name: Deploy to Lightsail
+        run: |
+          cat <<EOF > deployment.json
+          {
+            "containers": {
+              "frc-fantasy": {
+                "image": "$IMAGE_REF",
+                "ports": {
+                  "5000": "HTTP"
+                }
+              }
+            },
+            "publicEndpoint": {
+              "containerName": "frc-fantasy",
+              "containerPort": 5000
+            }
+          }
+          EOF
+          aws lightsail create-container-service-deployment --service-name frc-fantasy-service --cli-input-json file://deployment.json
