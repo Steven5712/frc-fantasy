@@ -46,4 +46,4 @@ if __name__ == '__main__':
             match.winner = None
             match.scored = False
         db.session.commit()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
