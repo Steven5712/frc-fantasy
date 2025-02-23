@@ -1,0 +1,8 @@
+{
+    "app": {
+      "image": "frc-fantasy",
+      "ports": {
+        "5000": "HTTP"
+      }
+    }
+  }
