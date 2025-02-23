@@ -25,9 +25,9 @@ def promote_admin(user_id):
     user_to_promote = User.query.get_or_404(user_id)
     
     # Prevent self-demotion or redundant promotion
-    if user_to_promote == current_user:
-        flash("You cannot modify your own admin status this way.")
-        return redirect(url_for('routes.dashboard'))
+    #if user_to_promote == current_user:
+    #    flash("You cannot modify your own admin status this way.")
+    #    return redirect(url_for('routes.dashboard'))
     if user_to_promote.is_admin:
         flash(f"{user_to_promote.username} is already an admin.")
         return redirect(url_for('routes.dashboard'))
