@@ -13,6 +13,31 @@ routes_bp = Blueprint('routes', __name__)
 def home():
     return render_template('home.html')
 
+@routes_bp.route('/promote_admin/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def promote_admin(user_id):
+    # Check if the current user is an admin
+    if not current_user.is_admin and current_user.id != 1:
+        flash("Only admins can promote other users to admin.")
+        return redirect(url_for('routes.dashboard'))
+
+    # Find the user to promote
+    user_to_promote = User.query.get_or_404(user_id)
+    
+    # Prevent self-demotion or redundant promotion
+    if user_to_promote == current_user:
+        flash("You cannot modify your own admin status this way.")
+        return redirect(url_for('routes.dashboard'))
+    if user_to_promote.is_admin:
+        flash(f"{user_to_promote.username} is already an admin.")
+        return redirect(url_for('routes.dashboard'))
+
+    # Promote the user
+    user_to_promote.is_admin = True
+    db.session.commit()
+    flash(f"{user_to_promote.username} has been promoted to admin.")
+    return redirect(url_for('routes.dashboard'))
+
 @routes_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -39,9 +64,10 @@ def login():
 @routes_bp.route('/dashboard')
 @login_required
 def dashboard():
+    users = User.query.all()
     matches = Match.query.order_by(Match.match_number.asc()).all()
     predictions = Prediction.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', matches=matches, predictions=predictions)
+    return render_template('dashboard.html', matches=matches, predictions=predictions, users=users)
 
 @routes_bp.route('/predict', methods=['POST'])
 @login_required

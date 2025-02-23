@@ -19,6 +19,31 @@
         {% endif %}
         <a href="{{ url_for('routes.logout') }}">Logout</a>
     </nav>
+
+    {% if current_user.is_admin %}
+    <h2>Admin: Manage Users</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Admin Status</th>
+            <th>Action</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+            <td>
+                {% if not user.is_admin %}
+                <a href="{{ url_for('routes.promote_admin', user_id=user.id) }}">Promote to Admin</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
     <h1>Dashboard</h1>
     <p>Welcome, {{ current_user.username }}! Points: {{ current_user.points }}</p>
     <h2>Upcoming Matches</h2>
