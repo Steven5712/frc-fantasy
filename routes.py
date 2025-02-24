@@ -8,7 +8,7 @@ from datetime import datetime
 routes_bp = Blueprint('routes', __name__)
 
 
-# Routes
+# Routes test
 @routes_bp.route('/')
 def home():
     return render_template('home.html')
