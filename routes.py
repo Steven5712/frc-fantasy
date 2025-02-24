@@ -169,15 +169,16 @@ def reset_scores():
 
 @routes_bp.route('/leaderboard')
 def leaderboard():
-    # Query users with their prediction stats
     users = User.query.order_by(User.points.desc()).all()
 
-    # For each user, calculate prediction stats
     for user in users:
-        # Total predictions made by the user
-        total_predictions = Prediction.query.filter_by(user_id=user.id).count()
+        # Total predictions for scored matches only
+        total_scored_predictions = db.session.query(Prediction).\
+            join(Match, Prediction.match_id == Match.id).\
+            filter(Prediction.user_id == user.id, Match.scored == True).\
+            count()
 
-        # Correct predictions: where predicted_winner matches match.winner and match is scored
+        # Correct predictions for scored matches
         correct_predictions = db.session.query(Prediction).\
             join(Match, Prediction.match_id == Match.id).\
             filter(Prediction.user_id == user.id, 
@@ -186,9 +187,9 @@ def leaderboard():
             count()
 
         # Calculate percentage (avoid division by zero)
-        user.total_predictions = total_predictions
+        user.total_predictions = total_scored_predictions
         user.correct_predictions = correct_predictions
-        user.percentage = (correct_predictions / total_predictions * 100) if total_predictions > 0 else 0
+        user.percentage = (correct_predictions / total_scored_predictions * 100) if total_scored_predictions > 0 else 0
 
     return render_template('leaderboard.html', users=users)
 
