@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from models import db, User, Match, Prediction, init_db
-from utils import datetimeformat, TBA_API_KEY, TBA_HEADERS, CURRENT_EVENT
+from utils import save_or_update_prediction, datetimeformat, TBA_API_KEY, TBA_HEADERS, CURRENT_EVENT
 import requests
 from datetime import datetime
 
@@ -77,19 +77,7 @@ def predict():
     # Fetch the match to check its scheduled time
     pred = Prediction.query.filter_by(user_id=current_user.id, match_id=match_id).first()
     match = Match.query.get_or_404(match_id)
-
-    # Check if predictions are locked (10 minutes before scheduled time)
-    current_time = datetime.utcnow().timestamp()  # Current time as Unix timestamp
-    lock_time = match.scheduled_time - 600  # 10 minutes (600 seconds) before scheduled time
-    if current_time >= lock_time:
-        flash(f"Predictions for match {match.match_number} are locked (less than 10 minutes until start).")
-        return redirect(url_for('routes.dashboard', _anchor=f'match-{match_id}'))
-
-    if pred:
-        pred.predicted_winner = winner
-    else:
-        db.session.add(Prediction(user_id=current_user.id, match_id=match_id, predicted_winner=winner))
-    db.session.commit()
+    success = save_or_update_prediction(current_user.id, match_id, winner)
     flash(f"{'Updated' if pred else 'Saved'} prediction!")
     return redirect(url_for('routes.dashboard', _anchor=f'match-{match_id}'))
 
