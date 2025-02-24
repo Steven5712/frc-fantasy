@@ -56,6 +56,13 @@ jobs:
                 "image": "${{ steps.push_image.outputs.image_ref }}",
                 "ports": {
                   "5000": "HTTP"
+                },
+                "environment": {
+                  "DB_USER": "${{ secrets.DB_USER }}",
+                  "DB_PASSWORD": "${{ secrets.DB_PASSWORD }}",
+                  "DB_HOST": "${{ secrets.DB_HOST }}",
+                  "DB_PORT": "${{ secrets.DB_PORT }}",
+                  "DB_NAME": "${{ secrets.DB_NAME }}"
                 }
               }
             },
