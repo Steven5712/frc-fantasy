@@ -5,11 +5,15 @@ from models import db, User, Match, Prediction
 from routes import init_routes
 from utils import datetimeformat
 from datetime import datetime
+import os
 
 # App Setup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tbot4230'  # Change this to a random string
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fantasy.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
+    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.jinja_env.filters['datetimeformat'] = datetimeformat
