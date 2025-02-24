@@ -163,6 +163,7 @@ def reset_scores():
         return redirect(url_for('routes.dashboard'))
 
     for match in Match.query.all(): match.scored = False
+    for match in Match.query.all(): match.winner = None
     for user in User.query.all(): user.points = 0
     db.session.commit()
     flash("Reset scores and points.")
