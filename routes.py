@@ -97,7 +97,14 @@ def update_scores():
             resp = requests.get(f'https://www.thebluealliance.com/api/v3/match/{key}', headers=TBA_HEADERS)
             if resp.status_code == 200:
                 data = resp.json()
-                match.winner = "Tie" if data['winning_alliance'] == "" else data['winning_alliance'].capitalize()
+                # Only set winner if the match has a result; otherwise, leave it unset
+                if data['actual_time']:  # Check if the match has been played (actual_time is set)
+                    match.winner = "Tie" if data['winning_alliance'] == "" else data['winning_alliance'].capitalize()
+                    # match.scored = True  # Mark as scored only if a winner is determined
+                else:
+                    continue  # Skip to next match if it hasn't been played yet
+
+        # Process predictions only if a winner has been set
         if match.winner:
             for pred in Prediction.query.filter_by(match_id=match.id).all():
                 if match.winner != "Tie" and pred.predicted_winner == match.winner:
@@ -131,7 +138,7 @@ def sync_matches():
     db.session.query(Prediction).delete()
     Match.query.delete()
     db.session.commit()
-    
+
     now = datetime.utcnow().timestamp()
     for m in [m for m in matches if m['comp_level'] == 'qm']:
         print(f"Match {m['match_number']}: predicted_time={m['predicted_time']}, actual_time={m['actual_time']}")
