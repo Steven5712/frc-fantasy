@@ -73,6 +73,21 @@ def dashboard():
 @login_required
 def predict():
     match_id, winner = request.form['match_id'], request.form['predicted_winner']
+
+    # Fetch the match to check its scheduled time
+    pred = Prediction.query.filter_by(user_id=current_user.id, match_id=match_id).first()
+    if pred:
+        match = pred.match  # Access via relationship
+    else:
+        match = Match.query.get_or_404(match_id)
+
+    # Check if predictions are locked (10 minutes before scheduled time)
+    current_time = datetime.utcnow().timestamp()  # Current time as Unix timestamp
+    lock_time = match.scheduled_time - 600  # 10 minutes (600 seconds) before scheduled time
+    if current_time >= lock_time:
+        flash(f"Predictions for match {match.match_number} are locked (less than 10 minutes until start).")
+        return redirect(url_for('routes.dashboard', _anchor=f'match-{match_id}'))
+
     pred = Prediction.query.filter_by(user_id=current_user.id, match_id=match_id).first()
     if pred:
         pred.predicted_winner = winner
