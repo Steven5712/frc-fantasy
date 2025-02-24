@@ -99,7 +99,6 @@ def update_scores():
                 # Only set winner if the match has a result; otherwise, leave it unset
                 if data['actual_time']:  # Check if the match has been played (actual_time is set)
                     match.winner = "Tie" if data['winning_alliance'] == "" else data['winning_alliance'].capitalize()
-                    # match.scored = True  # Mark as scored only if a winner is determined
                 else:
                     continue  # Skip to next match if it hasn't been played yet
 
@@ -110,7 +109,7 @@ def update_scores():
                     user = User.query.get(pred.user_id)
                     user.points = user.points or 0
                     user.points += 1
-                    updated = True
+            updated = True
             match.scored = True
     if updated:
         db.session.commit()
