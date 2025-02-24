@@ -126,8 +126,12 @@ def sync_matches():
         flash("Failed to sync matches.")
         return redirect(url_for('routes.dashboard'))
     matches = resp.json() or []
+
+    # Delete dependent predictions first, then matches
+    db.session.query(Prediction).delete()
     Match.query.delete()
     db.session.commit()
+    
     now = datetime.utcnow().timestamp()
     for m in [m for m in matches if m['comp_level'] == 'qm']:
         print(f"Match {m['match_number']}: predicted_time={m['predicted_time']}, actual_time={m['actual_time']}")
