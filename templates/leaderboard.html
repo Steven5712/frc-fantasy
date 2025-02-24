@@ -17,13 +17,17 @@
     <div class="content">
         <h1>Leaderboard</h1>
         <ul class="leaderboard-list">
-        {% for user in users %}
-            <li class="leaderboard-item">
-                <span class="username">{{ user.username }}</span> - 
-                <span class="points">{{ user.points }} points</span>
-            </li>
-        {% endfor %}
-        </ul>
+            {% for user in users %}
+                <li class="leaderboard-item">
+                    <span class="username">{{ user.username }}</span> - 
+                    <span class="points">{{ user.points }} points</span> - 
+                    <span class="prediction-stats">
+                        {{ user.correct_predictions }}/{{ user.total_predictions }} 
+                        ({{ user.percentage | round(1) }}%)
+                    </span>
+                </li>
+            {% endfor %}
+            </ul>
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
