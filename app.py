@@ -45,9 +45,5 @@ if __name__ == '__main__':
             db.session.add(match1)
             db.session.add(match2)
             db.session.commit()
-        matches = Match.query.limit(5).all()  # First 5 matches
-        for match in matches:
-            match.winner = None
-            match.scored = False
         db.session.commit()
     app.run(host="0.0.0.0", port=5000, debug=True)
