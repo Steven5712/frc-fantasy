@@ -53,15 +53,19 @@
 
 /* Top 3 Rankings (optional FRC flair) */
 .leaderboard-item:nth-child(1) {
-    border-left: 5px solid #ffd700; /* Gold for 1st */
+    border-left: 6px solid #ffd700; /* Gold */
+    background: linear-gradient(to right, rgba(255, 215, 0, 0.2), transparent); /* Gradient fade */
+    font-weight: bold;
 }
 
 .leaderboard-item:nth-child(2) {
-    border-left: 5px solid #c0c0c0; /* Silver for 2nd */
+    border-left: 6px solid #c0c0c0; /* Silver */
+    background: linear-gradient(to right, rgba(192, 192, 192, 0.2), transparent);
 }
 
 .leaderboard-item:nth-child(3) {
-    border-left: 5px solid #cd7f32; /* Bronze for 3rd */
+    border-left: 6px solid #cd7f32; /* Bronze */
+    background: linear-gradient(to right, rgba(205, 127, 50, 0.2), transparent);
 }
 
 .leaderboard-item:nth-child(even) {
