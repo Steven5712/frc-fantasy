@@ -10,14 +10,15 @@
 }
 
 .leaderboard-item {
+    display: grid;
+    grid-template-columns: 1fr 100px 120px; /* Username, points, stats */
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
-    padding: 15px 20px;
-    margin-bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 12px 20px;
     transition: background-color 0.2s, transform 0.2s;
 }
 
