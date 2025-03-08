@@ -87,8 +87,9 @@ def update_scores():
     if not current_user.is_admin:
         flash("Admin privileges required to update scores.")
         return redirect(url_for('routes.dashboard'))
+    current_time = datetime.utcnow().timestamp()
 
-    unscored = Match.query.filter_by(scored=False).all()
+    unscored = Match.query.filter_by(scored=False).filter(Match.scheduled_time < current_time).all()
     updated = False
     for match in unscored:
         if not match.winner:
