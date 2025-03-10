@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Fantasy FIRST Robotics</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/matches.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-</head>
-<body>
-    <div class="top-nav">
-        <a href="{{ url_for('routes.dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('routes.leaderboard') }}">Leaderboard</a>
-        <a href="{{ url_for('routes.login') }}">Login</a>
-        <a href="{{ url_for('routes.register') }}">Register</a>
-    </div>
-    <div class="content">
-        <h1 class="home-title">Welcome to Fantasy FIRST Robotics</h1>
-        <div class="home-links">
-            <a href="{{ url_for('routes.login') }}" class="home-button login-link">Login</a>
+    <head>
+        <title>Fantasy FIRST Robotics</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/matches.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    </head>
+    <body>
+        <div class="top-nav">
+            <a href="{{ url_for('routes.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('routes.leaderboard') }}">Leaderboard</a>
+            <a href="{{ url_for('routes.login') }}">Login</a>
+            <a href="{{ url_for('routes.register') }}">Register</a>
+        </div>
+        <div class="content">
+            <h1 class="home-title">Welcome to Fantasy FIRST Robotics</h1>
+            <div class="home-links">
+                <a href="{{ url_for('routes.login') }}" class="home-button login-link">Login</a>
+            </div>
+        </div>
+        <div class="h-4 sm:h-5 lg:h-6 flex justify-center items-center gap-1 text-xs sm:text-sm lg:text-base">Powered by<!-- --> 
+            <a target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline" href="https://www.thebluealliance.com/">The Blue Alliance</a>
+            <a target="_blank" rel="noopener noreferrer" class="relative h-4 sm:h-5 lg:h-6 w-4 sm:h-5 lg:w-6 mx-1" href="https://www.thebluealliance.com/">
+                <img alt="TBA" loading="lazy" decoding="async" data-nimg="fill" class="object-contain" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/tba.png"></a>
+        </div>
+    </body>
+</html>
