@@ -201,5 +201,5 @@ def logout():
     return redirect(url_for('routes.home'))
 
 def init_routes(app):
-    init_db(app)
+    # init_db(app)
     app.register_blueprint(routes_bp)

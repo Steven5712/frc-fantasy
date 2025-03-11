@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
-# Import db from app.py
 db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
@@ -19,10 +18,10 @@ class Match(db.Model):
     blue_team1 = db.Column(db.String(50), nullable=False)
     blue_team2 = db.Column(db.String(50), nullable=False)
     blue_team3 = db.Column(db.String(50), nullable=False)
-    winner = db.Column(db.String(50))  # "Red" or "Blue" (or None if not yet decided)
+    winner = db.Column(db.String(50))
     scored = db.Column(db.Boolean, default=False)
-    match_number = db.Column(db.Integer)  # New: Qualification match number
-    scheduled_time = db.Column(db.Integer)  # New: UNIX timestamp for scheduled start
+    match_number = db.Column(db.Integer)
+    scheduled_time = db.Column(db.Integer)
 
 class Prediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +30,4 @@ class Prediction(db.Model):
     predicted_winner = db.Column(db.String(50))
 
 def init_db(app):
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
+    db.init_app(app)  # Bind db to app once
