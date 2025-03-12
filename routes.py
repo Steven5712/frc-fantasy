@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from models import db, User, Match, Prediction, init_db
-from utils import save_or_update_prediction, datetimeformat, TBA_API_KEY, TBA_HEADERS, CURRENT_EVENT
+from utils import save_or_update_prediction, lock_predictions, datetimeformat, TBA_API_KEY, TBA_HEADERS, CURRENT_EVENT
 import requests
 from datetime import datetime
 
@@ -66,6 +66,10 @@ def login():
 def dashboard():
     users = User.query.all()
     matches = Match.query.order_by(Match.match_number.asc()).all()
+
+    for match in matches:
+        match.is_locked = lock_predictions(match)
+
     predictions = Prediction.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', matches=matches, predictions=predictions, users=users)
 

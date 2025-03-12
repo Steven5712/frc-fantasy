@@ -72,7 +72,7 @@
                     <option value="Red" {% if prediction and prediction.predicted_winner == "Red" %}selected{% endif %}>Red Alliance</option>
                     <option value="Blue" {% if prediction and prediction.predicted_winner == "Blue" %}selected{% endif %}>Blue Alliance</option>
                 </select>
-                {% if not match.scored %}
+                {% if not match.scored and not match.is_locked %}
                     <button type="submit" class="{{ 'update' if prediction else '' }}">{{ 'Update Prediction' if prediction else 'Predict' }}</button>
                 {% endif %}
             </form>
