@@ -10,6 +10,10 @@ TBA_HEADERS = {'X-TBA-Auth-Key': TBA_API_KEY}
 CURRENT_EVENT = '2025mimtp'
 
 def lock_predictions(match, minutes_before=10):
+
+    if match.scheduled_time is None:
+        return False
+
     """Check if predictions should be locked based on scheduled time."""
     current_time = datetime.utcnow().timestamp()
     lock_time = match.scheduled_time - (minutes_before * 60)
