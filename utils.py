@@ -7,7 +7,7 @@ import requests
 
 TBA_API_KEY = 'KbhtQ7hLnAVrhwv4aAuXmZoREyhy0Dutxx5Xob4gHnlbmEUhO087gT253BBjk52n'  # Replace with your TBA API key
 TBA_HEADERS = {'X-TBA-Auth-Key': TBA_API_KEY}
-CURRENT_EVENT = '2025mimtp'
+CURRENT_EVENT = '2025ndgf'
 
 def lock_predictions(match, minutes_before=10):
 
